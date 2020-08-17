@@ -1,0 +1,272 @@
+[
+    {
+        "id": "bb4cc09c.963c",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "adc5063c.93a8e8",
+        "type": "azure-event-hub-receive",
+        "z": "bb4cc09c.963c",
+        "name": "EUGENIO",
+        "connectionstring": "Endpoint=sb://{namespace}.servicebus.windows.net/;SharedAccessKeyName=Listen;SharedAccessKey={ssakey};EntityPath=eugenio.data",
+        "consumergroup": "$default",
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "3e8200c2.fa3b9"
+            ]
+        ]
+    },
+    {
+        "id": "5b02026.75322fc",
+        "type": "telegram sender",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "bot": "a6bae7ff.86feb8",
+        "x": 1570,
+        "y": 100,
+        "wires": [
+            [
+                "87b47bdd.06ec38"
+            ]
+        ]
+    },
+    {
+        "id": "494e2398.084c6c",
+        "type": "function",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "func": "\nmsg.payload = {\n    content: \"🐈 Parece que a areia dos gatos está baixa. Ta na hora de pedir mais.\",\n    type: \"message\",\n    chatId:\"-478588027\"   \n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1380,
+        "y": 100,
+        "wires": [
+            [
+                "5b02026.75322fc"
+            ]
+        ]
+    },
+    {
+        "id": "3e8200c2.fa3b9",
+        "type": "switch",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "property": "payload.schemaId",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "peso_smelly_cat",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 140,
+        "wires": [
+            [
+                "1c8207e.e2f65f8"
+            ]
+        ]
+    },
+    {
+        "id": "b9183016.2858e",
+        "type": "function",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "func": "msg.topic = \"areia-baixa\";\nmsg.payload = null;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 100,
+        "wires": [
+            [
+                "65914372.7e7a5c"
+            ]
+        ]
+    },
+    {
+        "id": "65914372.7e7a5c",
+        "type": "key-value-read",
+        "z": "bb4cc09c.963c",
+        "store": "c6e637b8.3b1fd8",
+        "key": "",
+        "name": "",
+        "x": 770,
+        "y": 100,
+        "wires": [
+            [
+                "c1dbce43.087a9"
+            ]
+        ]
+    },
+    {
+        "id": "8608e09d.01a63",
+        "type": "key-value-write",
+        "z": "bb4cc09c.963c",
+        "store": "c6e637b8.3b1fd8",
+        "action": "set",
+        "key": "",
+        "keyvalue": "",
+        "name": "",
+        "x": 1070,
+        "y": 100,
+        "wires": [
+            [
+                "9aba807a.b6e5b"
+            ]
+        ]
+    },
+    {
+        "id": "c1dbce43.087a9",
+        "type": "function",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "func": "\nmsg.payload = 1 + (msg.payload || 0);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 920,
+        "y": 100,
+        "wires": [
+            [
+                "8608e09d.01a63"
+            ]
+        ]
+    },
+    {
+        "id": "9aba807a.b6e5b",
+        "type": "switch",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "5",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1230,
+        "y": 100,
+        "wires": [
+            [
+                "494e2398.084c6c"
+            ]
+        ]
+    },
+    {
+        "id": "87b47bdd.06ec38",
+        "type": "key-value-write",
+        "z": "bb4cc09c.963c",
+        "store": "c6e637b8.3b1fd8",
+        "action": "delete",
+        "key": "",
+        "keyvalue": "",
+        "name": "",
+        "x": 1770,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c8207e.e2f65f8",
+        "type": "switch",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "property": "payload.payload.peso",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "2",
+                "vt": "num"
+            },
+            {
+                "t": "gt",
+                "v": "2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "b9183016.2858e"
+            ],
+            [
+                "db0dd969.a899f8"
+            ]
+        ]
+    },
+    {
+        "id": "db0dd969.a899f8",
+        "type": "function",
+        "z": "bb4cc09c.963c",
+        "name": "",
+        "func": "msg.topic = \"areia-baixa\";\nmsg.payload = null;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 180,
+        "wires": [
+            [
+                "87b47bdd.06ec38"
+            ]
+        ]
+    },
+    {
+        "id": "a6bae7ff.86feb8",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "egermano_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "c6e637b8.3b1fd8",
+        "type": "key-value-store",
+        "z": "",
+        "filepath": "smelly-cat.json",
+        "namespace": "smelly-cat",
+        "name": "Smelly Cat"
+    }
+]
