@@ -24,15 +24,20 @@ void setupScale() {
   loadcell.tare();
 }
 
-long getScale() {
-  long wt1 = 0;
+int tareButton() {
   int buttonState = digitalRead(BUTTON_PIN);
   //
   if (buttonState == 1) {
-    Serial.println("HX711 tare ativado.");
+    Serial.println("HX711 tara ativado.");
     loadcell.tare();
     delay(200);
   }
+
+  return buttonState;
+}
+
+long getScale() {
+  long wt1 = 0;
 
   if (loadcell.wait_ready_timeout(1000)) {
     wt1 = loadcell.get_units(10) / 1000;

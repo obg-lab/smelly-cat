@@ -5,6 +5,8 @@
 #include <mqtt.h>
 #include <scale.h>
 
+int readInterval = 0;
+
 void checkWiFiThenMQTT(void)
 {
   connectToWiFi("Checking WiFi");
@@ -28,18 +30,21 @@ void setup() {
 
 void loop() {
   now = time(nullptr);
-  if (!client.connected())
-  {
+  if (!client.connected()) {
     checkWiFiThenMQTT();
-  }
-  else
-  {
+  } else {
     client.loop();
-    if (millis() - lastMillis > 18e5)
-    {
+
+    tareButton();
+    delay(200);
+
+    // TODO: implementar mensagem de status
+    // TODO: implementar deep sleep
+    if (millis() - lastMillis > readInterval) {
       lastMillis = millis();
       long data = getScale();
       sendData(data);
+      readInterval = 18e5;
     }
   }
 }
