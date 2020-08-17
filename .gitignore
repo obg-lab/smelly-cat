@@ -4,3 +4,5 @@
 
 cert/
 platformio-device-monitor*
+
+src/secrets.h
