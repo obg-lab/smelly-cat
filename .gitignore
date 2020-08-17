@@ -3,3 +3,4 @@
 .gcc-flags.json
 
 cert/
+platformio-device-monitor*

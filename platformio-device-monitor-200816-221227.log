@@ -1,5 +1,0 @@
-MQTT conectando.conectado!
-HX711 lendo: 2
-Sending  [devices/de862b7c-aa12-43a7-8d8c-0919ef90cd2e/messages/events/]: {"payload":{"peso":2},"schema":"peso_smelly_cat"}
-HX711 lendo: 2
-Sending  [devices/de862b7c-aa12-43a7-8d8c-0919ef90cd2e/messages/events/]: {"payload":{"peso":2},"schema":"peso_smelly_cat"}
